@@ -65,14 +65,14 @@ h1 {
 .certificate {
     margin-top: 20px;
     background-color: #eef2f7;
-    padding: 20px;
+    padding: 15px;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image {
     margin-top: 10px;
-    width: 200px;
+    width: 250px;
     height: auto;
     border-radius: 10px;
 }
