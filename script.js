@@ -120,9 +120,10 @@ function checkAnswer(selectedIndex) {
     const answerButtons = document.querySelectorAll(".answers button");
     answerButtons.forEach(button => button.disabled = true);
     
-    // Adiciona a resposta ao array `responses`
+    // Adiciona a resposta ao array `responses` com o status correto/incorreto
     responses.push({
         question: questionData.question,
+        answer: questionData.answers[selectedIndex],
         correct: isCorrect
     });
 
@@ -139,6 +140,8 @@ function checkAnswer(selectedIndex) {
     scoreDisplay.textContent = `Pontuação: ${score}`;
     currentQuestionIndex++;
     setTimeout(showQuestion, 3000);
+
+    console.log(responses);
 }
 
 function showExplanation(explanation) {
@@ -154,10 +157,10 @@ function registerPlayer(playerName, score, responses) {
         score: score,
         gotCertificate: score >= 100,
         date: new Date(),
-        responses: responses,
+        responses: responses,  // Aqui enviamos as respostas
     };
 
-console.log(playerData);
+    console.log("Dados do jogador a serem enviados:", playerData);
 
     fetch('http://localhost:3000/register', {
         method: 'POST',
@@ -173,11 +176,14 @@ console.log(playerData);
 
 function showFinalMessage() {
     const playerName = prompt("Parabéns! Qual é o seu nome?");
-    registerPlayer(playerName, score); // Enviar a pontuação e o nome para o back-end
+    
+    // Verifica o conteúdo de responses antes de enviar
+    console.log("Responses antes de registrar:", responses);
 
-    // Verificar a pontuação do jogador
+    // Registra o jogador com as respostas coletadas
+    registerPlayer(playerName, score, responses);
+
     if (score >= 100) {
-        // Jogador atingiu 100 pontos ou mais
         gameArea.innerHTML = `<h2>Parabéns, ${playerName}! Você completou o jogo com ${score} pontos e agora é um Mestre da Privacidade!</h2>`;
         certificateArea.innerHTML = `
             <div class= "certificate">
@@ -187,13 +193,11 @@ function showFinalMessage() {
             </div>
         `;
     } else if (score >= 75) {
-        // Jogador fez entre 75 e 99 pontos
         gameArea.innerHTML = `<h2>Parabéns, ${playerName}! Você completou o jogo com ${score} pontos, mas ainda não é um Mestre... Continue estudando, padawan!</h2>`;
-        certificateArea.innerHTML = ''; // Não exibir o certificado
+        certificateArea.innerHTML = ''; 
     } else {
-        // Jogador fez menos de 75 pontos
         gameArea.innerHTML = `<h2>Ouch... Agora a privacidade está em perigo! Você completou o jogo com ${score} pontos. Conhecimento lhe falta, padawan!</h2>`;
-        certificateArea.innerHTML = ''; // Não exibir o certificado
+        certificateArea.innerHTML = ''; 
     }
 }
 
