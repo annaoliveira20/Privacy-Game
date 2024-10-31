@@ -1,7 +1,7 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');  // Certifique-se de importar o mongoose
 const cors = require('cors');
-const Player = require('./models/Player');
+const Player = require('./models/Player'); // Certifique-se de que esse caminho está correto
 
 const app = express();
 app.use(express.json());
@@ -14,14 +14,14 @@ mongoose.connect('mongodb+srv://annaoliveira:SSH2VQJUR4Z8tYDA@privacygame.grch0.
 
 // Rota para registrar o jogador
 app.post('/register', async (req, res) => {
-    const { name, score, gotCertificate, responses } = req.body;
+    const { name, score } = req.body;
 
     try {
-        const player = new Player({ name, score, gotCertificate, responses });
+        const gotCertificate = score >= 30;
+        const player = new Player({ name, score, gotCertificate });
         await player.save();
         res.status(201).json({ message: 'Jogador registrado com sucesso!', player });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ message: 'Erro ao registrar jogador', err });
     }
 });
