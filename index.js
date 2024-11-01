@@ -14,11 +14,12 @@ mongoose.connect('mongodb+srv://annaoliveira:SSH2VQJUR4Z8tYDA@privacygame.grch0.
 
 // Rota para registrar o jogador
 app.post('/register', async (req, res) => {
-    const { name, score } = req.body;
+    const { name, score, responses } = req.body;  // Inclua 'responses' aqui
+    console.log("Dados recebidos no servidor:", req.body);
 
     try {
         const gotCertificate = score >= 30;
-        const player = new Player({ name, score, gotCertificate });
+        const player = new Player({ name, score, gotCertificate, responses });  // responses agora será enviado corretamente
         await player.save();
         res.status(201).json({ message: 'Jogador registrado com sucesso!', player });
     } catch (err) {
