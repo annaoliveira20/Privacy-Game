@@ -160,7 +160,7 @@ function registerPlayer(playerName, score, responses) {
         responses: responses,  // Aqui enviamos as respostas
     };
 
-    console.log("Dados do jogador a serem enviados:", playerData);
+    console.log(responses);
 
     fetch('http://localhost:3000/register', {
         method: 'POST',
